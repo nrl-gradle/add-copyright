@@ -1,0 +1,78 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+    id 'com.gradle.plugin-publish'
+}
+apply plugin: 'nrlssc.gradle'
+
+nrl{
+    majorVersion = 2
+    minorVersion = 0
+    publishNexus = true
+}
+
+sourceCompatibility = 1.8
+compileJava.options.encoding = 'UTF-8'
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+        resources {
+            srcDir 'resources'
+        }
+    }
+}
+
+clean {
+    delete "libs"
+}
+
+mainClassName = 'nrlssc.copyright.AddCopyright'
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Main-Class': mainClassName
+    }
+
+}
+
+
+dependencies {
+    compile 'com.google.guava:guava:19.0',           // Google guava
+            'org.slf4j:slf4j-api:1.7.21'                // Logging via SLF4J
+
+    runtime 'ch.qos.logback:logback-classic:1.1.7'
+
+    testCompile 'junit:junit:4.11'
+}
+
+
+// declare artifacts for generation and potential upload
+artifacts {
+    archives appZip
+}
+
+
+pluginBundle {
+    website = 'https://geoint.nrlssc.org/'
+    vcsUrl = 'https://github.com/seanrl/add-copyright.git'
+    tags = ['copyright']
+}
+
+gradlePlugin {
+    //noinspection GroovyAssignabilityCheck
+    plugins {
+        copyrightLib {
+            id = 'nrlssc.add-copyright'
+            displayName = 'add-copyright'
+            description = 'This is not a plugin, just a library needed for other nrlssc plugins'
+            implementationClass = 'nrlssc.copyright.AddCopyright'
+        }
+    }
+}
