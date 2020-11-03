@@ -4,8 +4,8 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'com.gradle.plugin-publish'
+    id 'nrlssc.gradle'
 }
-apply plugin: 'nrlssc.gradle'
 
 nrl{
     majorVersion = 2
